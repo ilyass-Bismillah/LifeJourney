@@ -23,18 +23,17 @@ const Navbar = () => {
   const pathname = usePathname();
   return (
     <nav className="py-5 fixed z-50 w-full bg-background">
-      <div className="flex items-center justify-between max-w-7xl mx-auto px-5">
-        <div className="flex items-center font-serif font-bold">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center">
           <Image
             src="/script.png"
             alt="logo"
             width={50}
             height={50}
-            className=""
           />
-          <h1 className="text-primary">FutureArchives</h1>
+          <h1 className="text-primary font-bold font-mono">LifeJourney</h1>
         </div>
-        <div className="md:flex hidden items-center gap-x-3">
+        <div className="md:flex hidden items-center space-x-5">
           {NavLinks.map(({ href, label }) => (
             <Link
               key={href}
@@ -65,7 +64,7 @@ const Navbar = () => {
                     height={50}
                     className=""
                   />
-                  <h1 className="text-primary">FutureArchives</h1>
+                  <h1 className="text-primary">LifeJourney</h1>
                 </div>
                 <div className="flex flex-col items-start gap-y-3 my-10">
                   {NavLinks.map(({ href, label }) => (
