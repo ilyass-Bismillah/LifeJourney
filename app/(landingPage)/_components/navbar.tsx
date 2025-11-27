@@ -11,7 +11,9 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, Plus } from "lucide-react";
+import { SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 const NavLinks = [
   { label: "Home", href: "/" },
@@ -25,12 +27,7 @@ const Navbar = () => {
     <nav className="py-5 fixed z-50 w-full bg-background">
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <div className="flex items-center">
-          <Image
-            src="/script.png"
-            alt="logo"
-            width={50}
-            height={50}
-          />
+          <Image src="/script.png" alt="logo" width={50} height={50} />
           <h1 className="text-primary font-bold font-mono">LifeJourney</h1>
         </div>
         <div className="md:flex hidden items-center space-x-5">
@@ -49,7 +46,24 @@ const Navbar = () => {
         </div>
         <div className="flex items-center gap-x-2">
           <ModeToggle />
-          <span>login</span>
+          <SignedOut>
+            <div className="md:block hidden">
+              <SignUpButton mode="modal">
+                <Button>Log In</Button>
+              </SignUpButton>
+            </div>
+          </SignedOut>
+
+          <SignedIn>
+            <Link href="/story">
+              <Button>
+                <Plus className="h-5 w-5" />
+                <span className="md:block hidden">Create a story</span>
+              </Button>
+            </Link>
+            <UserButton />
+          </SignedIn>
+          
           <Sheet>
             <SheetTrigger className="md:hidden block">
               <Menu className="w-8 h-8" />
@@ -80,7 +94,11 @@ const Navbar = () => {
                     </Link>
                   ))}
                 </div>
-                <span>login</span>
+                <SignedOut>
+                  <SignUpButton mode="modal">
+                    <Button>Log In</Button>
+                  </SignUpButton>
+                </SignedOut>
               </SheetHeader>
             </SheetContent>
           </Sheet>
