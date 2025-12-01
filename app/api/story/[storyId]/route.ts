@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { prisma } from "@/prisma/db";
+import { prisma } from "@/lib/prisma";
 
 export async function PATCH(req: NextRequest, { params } : { params : { storyId: string}}) {
     const { userId } = await auth();
@@ -43,5 +43,5 @@ export async function DELETE(req: NextRequest, { params } : { params : { storyId
         where: { id: params.storyId}
     })
 
-    return NextResponse.json("Story deleted", { status: 201})
+    return NextResponse.json(deletedStory, { status: 201})
 }

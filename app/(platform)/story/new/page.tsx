@@ -37,11 +37,14 @@ const NewStoryPage = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true)
-      const res = await axios.post("/api/story/create", {
+      toast("Story is creating ...")
+      const res = await axios.post("/api/story", {
         ...values,
         userId
       })
       if(res.status === 201) {
+        console.log("created");
+        
         toast("Story is created", {className: "bg-emerald-500 text-white"})
         router.push("/story")
         router.refresh()
