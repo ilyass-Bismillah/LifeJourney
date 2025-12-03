@@ -9,11 +9,12 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
+  
   const newStory = await prisma.story.create({
     data: {
       ...body,
-      userId,
+      userId
     },
   });
-  return NextResponse.json(newStory, { status: 201 });
+  return NextResponse.json(newStory, { status: 200 });
 }

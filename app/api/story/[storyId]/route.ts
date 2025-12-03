@@ -1,47 +1,52 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function PATCH(req: NextRequest, { params } : { params : { storyId: string}}) {
-    const { userId } = await auth();
-    if (!userId) {
-        return NextResponse.json("Unauthorized", { status: 500})
-    }
+export async function PATCH(
+  req: NextRequest,
+  context: { params: Promise<{ storyId: string }> }
+) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-    const body = await req.json();
-    const existingStory = await prisma.story.findUnique({
-        where: { id: params.storyId}
-    })
+  const { storyId } = await context.params;
 
-    if (!existingStory){
-        return NextResponse.json("Story not found", { status: 404})
-    }
+  const body = await req.json();
 
-    const updatedStory = await prisma.story.update({
-        where: { id: params.storyId},
-        data: { ...body}
-    })
+  const existingStory = await prisma.story.findUnique({
+    where: { id: storyId },
+  });
 
-    return NextResponse.json(updatedStory, { status: 201})
-};
+  if (!existingStory)
+    return NextResponse.json("Story not found", { status: 404 });
 
-export async function DELETE(req: NextRequest, { params } : { params : { storyId: string}}) {
-    const { userId } = await auth();
-    if (!userId) {
-        return NextResponse.json("Unauthorized", { status: 500})
-    }
+  const updatedStory = await prisma.story.update({
+    where: { id: storyId },
+    data: { ...body, userId },
+  });
 
-    const existingStory = await prisma.story.findUnique({
-        where: { id: params.storyId}
-    })
+  return NextResponse.json(updatedStory, { status: 200 });
+}
 
-    if (!existingStory){
-        return NextResponse.json("Story not found", { status: 404})
-    }
+export async function DELETE(
+  req: NextRequest,
+  context: { params: Promise<{ storyId: string }> }
+) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-    const deletedStory = await prisma.story.delete({
-        where: { id: params.storyId}
-    })
+  const { storyId } = await context.params;
 
-    return NextResponse.json(deletedStory, { status: 201})
+  const existingStory = await prisma.story.findUnique({
+    where: { id: storyId },
+  });
+
+  if (!existingStory)
+    return NextResponse.json("Story not found", { status: 404 });
+
+  await prisma.story.delete({
+    where: { id: storyId },
+  });
+
+  return NextResponse.json("Story deleted", { status: 200 });
 }

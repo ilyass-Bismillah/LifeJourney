@@ -12,7 +12,6 @@ import axios from "axios"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -42,14 +41,15 @@ const NewStoryPage = () => {
         ...values,
         userId
       })
-      if(res.status === 201) {
+      if(res.status === 200) {
         console.log("created");
         
         toast("Story is created", {className: "bg-emerald-500 text-white"})
-        router.push("/story")
+        router.push(`/story/${res.data.id}`)
         router.refresh()
       }
     }catch(error) {
+      console.log(error)
       toast("Somthing went wrong", {className: "bg-rose-500 text-white"})
     }finally {
       setIsSubmitting(false)
@@ -72,9 +72,6 @@ const NewStoryPage = () => {
                 <FormControl>
                   <Input placeholder="(ex: The day i deployed my first project)" {...field} />
                 </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
