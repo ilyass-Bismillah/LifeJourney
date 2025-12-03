@@ -20,7 +20,7 @@ const DeleteStory = ({ initialData }: Props) => {
     try {
       const res = await axios.delete(`/api/story/${initialData.id}`);
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         toast("Story is deleted");
         router.push("/story");
         router.refresh();

@@ -43,7 +43,6 @@ const StoryForm = ({ initialData }: Props) => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true);
-      toast("Story is updating ...");
       const res = await axios.patch(`/api/story/${initialData.id}`, {
         ...values,
       });
