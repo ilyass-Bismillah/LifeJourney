@@ -5,14 +5,41 @@ import { prisma } from "@/lib/prisma"
 export async function POST(req: NextRequest) {
     const { userId } = await auth();
     if (!userId){
-        return NextResponse.json("Unauthorized", { status: 500 });
+        return NextResponse.json("Unauthorized", { status: 401 });
     }
 
     const body = await req.json();
 
     const newSave = await prisma.save.create({
-        data: { ...body}
+        data: { ...body , userId}
     })
 
-    return NextResponse.json(newSave, { status: 201})
+    return NextResponse.json(newSave, { status: 200})
+}
+
+export async function DELETE(req: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json("Unauthorized", { status: 401 });
+  }
+
+  const { saveId } = await req.json();
+
+  if (!saveId) {
+    return NextResponse.json("saveId missing", { status: 400 });
+  }
+
+  const existingSave = await prisma.save.findUnique({
+    where: { id: saveId },
+  });
+
+  if (!existingSave) {
+    return NextResponse.json("Save not found", { status: 404 });
+  }
+
+  await prisma.save.delete({
+    where: { id: saveId },
+  });
+
+  return NextResponse.json("Save deleted", { status: 200 });
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
-
 import {
   Card,
   CardDescription,
@@ -35,9 +34,9 @@ const StoriesPage = async () => {
           the divers paths people have taken in their journey.
         </p>
       </div>
-      <div className="grid md:grid-cols-4 sm:grid-cols-2 mt-10 gap-5">
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 mt-10 gap-5 justify-center">
         {stories.map((story) => (
-          <Card key={story.id}>
+          <Card key={story.id} className="relative h-full w-full">
             {
                 story.image ? (
                     <div className="w-full h-52 aspect-video relative rounded-md">

@@ -2,23 +2,25 @@ import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"
 
-export async function DELETE(req: NextRequest, { params }: { params : { saveId: string}}){
+export async function DELETE(req: NextRequest, context: { params : Promise<{ saveId: string}>}){
     const {userId} = await auth();
     if (!userId){
-        return NextResponse.json("Unauthorized", { status: 500})
+        return NextResponse.json("Unauthorized", { status: 401})
     }
 
+    const { saveId } = await context.params
+
     const existingSave = await prisma.save.findUnique({
-        where: { id: params.saveId}
+        where: { id: saveId}
     })
 
     if (!existingSave){
         return NextResponse.json("Save not found", { status: 404})
     }
 
-    const deletedSave = await prisma.save.delete({
-        where: { id: params.saveId}
+     await prisma.save.delete({
+        where: { id: saveId}
     })
 
-     return NextResponse.json("Save deleted", { status: 201})
+     return NextResponse.json("Save deleted", { status: 200})
 }
