@@ -1,14 +1,10 @@
 {
-  "homepage": "https://ilyass-Bismillah.github.io/LifeJourney",
   "name": "storycareer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "export": "next export",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d out",
-    "build": "SET NEXT_DISABLE_TURBOPACK=1 && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate"
@@ -53,7 +49,6 @@
     "baseline-browser-mapping": "^2.8.32",
     "eslint": "^9",
     "eslint-config-next": "16.0.4",
-    "gh-pages": "^6.3.0",
     "prisma": "6.19",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",

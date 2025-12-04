@@ -11,7 +11,7 @@ const Hero = () => {
         Discover and Share Inspiring Life Journey
       </h1>
       <p className="max-w-lg text-muted-foreground">
-        Life Journey is a unique platform where individuals from all walks of
+        LifeJourney is a unique platform where individuals from all walks of
         life can share their journey stories, challenges, and successes. Whether
         you&apos;re just starting out.
       </p>
