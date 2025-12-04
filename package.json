@@ -1,12 +1,17 @@
 {
+  "homepage": "https://ilyass-Bismillah.github.io/LifeJourney",
   "name": "storycareer",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "export": "next export",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d out",
     "build": "SET NEXT_DISABLE_TURBOPACK=1 && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.35.5",

@@ -8,8 +8,8 @@ import StoryForm from "./_components/storyForm";
 import ImageForm from "./_components/imageForm";
 import DeleteStory from "./_components/deleteStory";
 
-const EditStoryPage = async ({ params }: { params: Promise<{ storyId: string }> }) => {
-  const { storyId } = await params;
+const EditStoryPage = async ({ params }: { params: { storyId: string } }) => {
+  const { storyId } =  params;
   const { userId } = await auth();
 
   if (!userId) return null;
