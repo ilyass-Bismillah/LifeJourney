@@ -4,43 +4,31 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-export default async function handler(req: NextRequest) {
+export async function POST(req: NextRequest) {
   const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json("Unauthorized", { status: 401 });
-  }
+  if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-  if (req.method === "POST") {
-    const body = await req.json();
+  const body = await req.json();
 
-    const newSave = await prisma.save.create({
-      data: { ...body, userId },
-    });
+  const newSave = await prisma.save.create({
+    data: { ...body, userId },
+  });
 
-    return NextResponse.json(newSave, { status: 200 });
-  }
+  return NextResponse.json(newSave, { status: 200 });
+}
 
-  if (req.method === "DELETE") {
-    const { saveId } = await req.json();
+export async function DELETE(
+  req: NextRequest,
+  context: { params: { saveId: string } }
+) {
+  const { userId } = await auth();
+  if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-    if (!saveId) {
-      return NextResponse.json("saveId missing", { status: 400 });
-    }
+  const { saveId } = context.params;
 
-    const existingSave = await prisma.save.findUnique({
-      where: { id: saveId },
-    });
+  const existingSave = await prisma.save.findUnique({ where: { id: saveId } });
+  if (!existingSave) return NextResponse.json("Save not found", { status: 404 });
 
-    if (!existingSave) {
-      return NextResponse.json("Save not found", { status: 404 });
-    }
-
-    await prisma.save.delete({
-      where: { id: saveId },
-    });
-
-    return NextResponse.json("Save deleted", { status: 200 });
-  }
-
-  return NextResponse.json("Method not allowed", { status: 405 });
+  await prisma.save.delete({ where: { id: saveId } });
+  return NextResponse.json("Save deleted", { status: 200 });
 }
