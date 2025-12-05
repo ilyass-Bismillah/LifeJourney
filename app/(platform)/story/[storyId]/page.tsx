@@ -9,7 +9,7 @@ import ImageForm from "./_components/imageForm";
 import DeleteStory from "./_components/deleteStory";
 
 const EditStoryPage = async ({ params }: { params: { storyId: string } }) => {
-  const { storyId } =  params;
+  const  storyId  = params.storyId;
   const { userId } = await auth();
 
   if (!userId) return null;
@@ -17,7 +17,7 @@ const EditStoryPage = async ({ params }: { params: { storyId: string } }) => {
   const story = await prisma.story.findFirst({
     where: {
       id: storyId,
-      userId: userId,
+      userId,
     },
   });
 

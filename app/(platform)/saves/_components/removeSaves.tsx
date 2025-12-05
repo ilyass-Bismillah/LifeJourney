@@ -16,6 +16,7 @@ const RemoveSaves = ({ saveId }: Props) => {
 
   const handleRemoveSave = async () => {
     try {
+      setIsRemoving(true);
       const res = await axios.delete(`/api/save/${saveId}`);
       if (res.status === 200) {
         router.refresh();

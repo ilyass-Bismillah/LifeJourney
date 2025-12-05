@@ -6,12 +6,12 @@ export const dynamic = "force-dynamic";
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: { storyId: string } }
+  {params}: { params: { storyId: string } }
 ) {
+  const { storyId } = params;
   const { userId } = await auth();
   if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-  const { storyId } = context.params;
   const body = await req.json();
 
   const existingStory = await prisma.story.findUnique({ where: { id: storyId } });
@@ -27,12 +27,13 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { storyId: string } }
+  { params }: { params: { storyId: string } }
 ) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-  const { storyId } = context.params;
+  const { storyId } = params;
+  
   const existingStory = await prisma.story.findUnique({ where: { id: storyId } });
   if (!existingStory) return NextResponse.json("Story not found", { status: 404 });
 

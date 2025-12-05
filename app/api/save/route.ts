@@ -17,14 +17,12 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(newSave, { status: 200 });
 }
 
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { saveId: string } }
-) {
+export async function DELETE(req: NextRequest) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-  const { saveId } = context.params;
+  const { saveId } = await req.json();
+  if (!saveId) return NextResponse.json("saveId missing", { status: 400 });
 
   const existingSave = await prisma.save.findUnique({ where: { id: saveId } });
   if (!existingSave) return NextResponse.json("Save not found", { status: 404 });
@@ -32,3 +30,4 @@ export async function DELETE(
   await prisma.save.delete({ where: { id: saveId } });
   return NextResponse.json("Save deleted", { status: 200 });
 }
+
