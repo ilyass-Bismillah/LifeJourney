@@ -4,20 +4,17 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
-
-export async function POST(req: NextRequest) {
+export default async function handler(req: NextRequest) {
   const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json("Unauthorized", { status: 401 });
+  if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
+
+  if (req.method === "POST") {
+    const body = await req.json();
+    const newStory = await prisma.story.create({
+      data: { ...body, userId },
+    });
+    return NextResponse.json(newStory, { status: 200 });
   }
 
-  const body = await req.json();
-  
-  const newStory = await prisma.story.create({
-    data: {
-      ...body,
-      userId
-    },
-  });
-  return NextResponse.json(newStory, { status: 200 });
+  return NextResponse.json("Method not allowed", { status: 405 });
 }
