@@ -11,7 +11,7 @@ export async function DELETE(
   const { userId } = await auth();
   if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-  const { saveId } = params;
+  const { saveId } = await params;
 
   const existingSave = await prisma.save.findUnique({ where: { id: saveId } });
   if (!existingSave) return NextResponse.json("Save not found", { status: 404 });

@@ -8,7 +8,7 @@ export async function PATCH(
   req: NextRequest,
   {params}: { params: { storyId: string } }
 ) {
-  const { storyId } = params;
+  const { storyId } = await params;
   const { userId } = await auth();
   if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
@@ -32,7 +32,7 @@ export async function DELETE(
   const { userId } = await auth();
   if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
 
-  const { storyId } = params;
+  const { storyId } = await params;
   
   const existingStory = await prisma.story.findUnique({ where: { id: storyId } });
   if (!existingStory) return NextResponse.json("Story not found", { status: 404 });

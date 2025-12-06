@@ -31,9 +31,9 @@ const SavesPage = async () => {
     <div className="flex flex-col space-y-5 w-full">
       <h1 className="font-semibold">My saves</h1>
       <Separator />
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-5">
+      <div className="grid md:grid-cols-2 gap-5 justify-center">
         {saves.map(({ story, id }) => (
-          <Card key={id}>
+          <Card key={id} className="flex flex-col h-full">
             {story.image ? (
               <div className="w-full h-52 aspect-video relative rounded-md">
                 <Image
@@ -48,20 +48,20 @@ const SavesPage = async () => {
                 <ImageIcon className="h-8 w-8" />
               </div>
             )}
-            <CardHeader>
+            <CardHeader className="flex-1">
               <CardTitle className="line-clamp-2">{story.title}</CardTitle>
               <CardDescription className="line-clamp-3">
                 {story.story}
               </CardDescription>
             </CardHeader>
-            <CardFooter className="flex items-center justify-between">
+            <CardFooter className="flex items-center justify-between mt-auto">
               <ReadStory initialData={story}>
                 <Button>
                   Read More
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </ReadStory>
-              <RemoveSaves saveId={id} />
+              <RemoveSaves saveId={id}/>
             </CardFooter>
           </Card>
         ))}
