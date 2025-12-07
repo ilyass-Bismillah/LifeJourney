@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
-  if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
+  if (!userId) return NextResponse.json({error: "Unauthorized"}, { status: 401 });
 
   const body = await req.json();
 
@@ -19,15 +19,15 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const { userId } = await auth();
-  if (!userId) return NextResponse.json("Unauthorized", { status: 401 });
+  if (!userId) return NextResponse.json({error: "Unauthorized"}, { status: 401 });
 
   const { saveId } = await req.json();
-  if (!saveId) return NextResponse.json("saveId missing", { status: 400 });
+  if (!saveId) return NextResponse.json({error: "saveId missing"}, { status: 400 });
 
   const existingSave = await prisma.save.findUnique({ where: { id: saveId } });
-  if (!existingSave) return NextResponse.json("Save not found", { status: 404 });
+  if (!existingSave) return NextResponse.json({error: "Save not found"}, { status: 404 });
 
   await prisma.save.delete({ where: { id: saveId } });
-  return NextResponse.json("Save deleted", { status: 200 });
+  return NextResponse.json({message: "Save deleted"}, { status: 200 });
 }
 
