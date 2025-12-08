@@ -1,7 +1,7 @@
 "use client";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, Pencil } from "lucide-react";
-import { Story } from "@/generated/prisma/client";
+import { Story } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

@@ -1,5 +1,5 @@
 "use client";
-import { Story } from "@/generated/prisma/client";
+import { Story } from "@prisma/client";
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

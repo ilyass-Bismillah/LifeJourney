@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import ReadStory from "@/components/readStory";
 import SaveForm from "./_components/SaveForm";
 
-
 const StoriesPage = async () => {
   const stories = await prisma.story.findMany({
     orderBy: {
@@ -22,7 +21,7 @@ const StoriesPage = async () => {
   });
   const saves = await prisma.save.findMany();
   return (
-    <div className="py-32 h-screen">
+    <div className="py-32 h-full">
       <div className="flex flex-col space-y-3 justify-center text-center items-center">
         <h1 className="text-3xl max-w-2xl md:text-5xl font-bold">
           Explore Journey Life
@@ -34,9 +33,9 @@ const StoriesPage = async () => {
           the divers paths people have taken in their journey.
         </p>
       </div>
-      <div className="grid md:grid-cols-3 sm:grid-cols-2 mt-10 gap-5 justify-center">
+      <div className="grid md:grid-cols-3 mt-10 gap-5 justify-center">
         {stories.map((story) => (
-          <Card key={story.id} className="relative h-full w-full">
+          <Card key={story.id} className="h-full w-full">
             {
                 story.image ? (
                     <div className="w-full h-52 aspect-video relative rounded-md">
@@ -53,7 +52,7 @@ const StoriesPage = async () => {
                     </div>
                 )
             }
-            <CardHeader>
+            <CardHeader className="h-32">
               <CardTitle className="line-clamp-2">{story.title}</CardTitle>
               <CardDescription className="line-clamp-3">{story.story}</CardDescription>
             </CardHeader>

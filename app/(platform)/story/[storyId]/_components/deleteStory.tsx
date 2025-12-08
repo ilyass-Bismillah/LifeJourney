@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { Trash, Loader } from "lucide-react";
-import { Story } from "@/generated/prisma/client";
+import { Story } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";

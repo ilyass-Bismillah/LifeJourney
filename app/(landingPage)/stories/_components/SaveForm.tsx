@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Story, Save } from "@/generated/prisma/client";
+import { Story, Save } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";

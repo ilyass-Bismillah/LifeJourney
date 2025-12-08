@@ -5,7 +5,7 @@ import { Pencil, ImageIcon, PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Story } from "@/generated/prisma/client";
+import { Story } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import FileUploader from "@/components/fileUploader";
 

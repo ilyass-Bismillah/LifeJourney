@@ -4,7 +4,7 @@ import Footer from "./_components/footer";
 
 const LandingPageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="h-full ">
+    <div>
       <Navbar />
       <main className="h-full max-w-7xl mx-auto px-5 relative">{children}</main>
       <Footer/>
