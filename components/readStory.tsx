@@ -1,5 +1,5 @@
 import React from 'react'
-import { Story } from "@/generated/prisma/client"
+import { Story } from "@prisma/client"
 import {
   AlertDialog,
   AlertDialogCancel,
