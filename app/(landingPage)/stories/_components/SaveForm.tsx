@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { useMemo, useState } from "react";
 import { Story, Save } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -15,43 +15,50 @@ interface Props {
 
 const SaveForm = ({ story, saves }: Props) => {
   const { userId } = useAuth();
-  const router = useRouter();
+  const router = useRouter(); 
+
+  const foundSave = useMemo(() => {
+    return saves.find(
+      (s) => s.storyId === story.id && s.userId === userId
+    );
+  }, [userId, saves, story.id]);
+
+  const [isSaved, setIsSaved] = useState(!!foundSave);
+  const [currentSaveId, setCurrentSaveId] = useState(null);
+
   if (!userId) return null;
 
-  const getSave = saves.find(
-    (save) => save.storyId === story.id && save.userId === userId
-  );
   const handleSave = async () => {
     try {
-      if (getSave) {
-        const res = await axios.delete("/api/save", {
-          data: { saveId: getSave.id },
-        });
-        if (res.status === 200) {
-          router.refresh();
-          toast("Story is removed!");
-        }
-        return;
-      }
-      const res = await axios.post("/api/save", {
-        storyId: story.id,
-        userId,
-      });
+      setIsSaved((prev) => !prev); 
 
-      if (res.status === 200) {
-        router.refresh();
-        toast("Story is saved!");
+      if (isSaved && currentSaveId) {
+      
+        await axios.delete("/api/save", { data: { saveId: currentSaveId } });
+        toast("Story removed!");
+      } else {
+      
+        const res = await axios.post("/api/save", {
+          storyId: story.id,
+          userId,
+        });
+        setCurrentSaveId(res.data.id);
+        toast("Story saved!");
       }
+
+      router.refresh();
     } catch (error) {
       console.log(error);
-      toast("Somthing went wrong", { className: "bg-rose-500 text-white" });
+      toast("Something went wrong", { className: "bg-rose-500 text-white" });
+      setIsSaved((prev) => !prev); 
     }
   };
+
   return (
     <Button variant={"ghost"} onClick={handleSave}>
-        <Heart className={getSave ? "text-rose-500" : ""}/>
+      <Heart className={isSaved ? "text-rose-500" : ""} />
     </Button>
-  )
+  );
 };
 
 export default SaveForm;
