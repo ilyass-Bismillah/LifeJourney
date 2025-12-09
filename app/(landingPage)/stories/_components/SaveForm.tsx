@@ -15,7 +15,7 @@ interface Props {
 
 const SaveForm = ({ story, saves }: Props) => {
   const { userId } = useAuth();
-  const router = useRouter(); 
+  const router = useRouter();
 
   const foundSave = useMemo(() => {
     return saves.find(
@@ -24,24 +24,26 @@ const SaveForm = ({ story, saves }: Props) => {
   }, [userId, saves, story.id]);
 
   const [isSaved, setIsSaved] = useState(!!foundSave);
-  const [currentSaveId, setCurrentSaveId] = useState(null);
+  const [currentSaveId, setCurrentSaveId] = useState(foundSave?.id || null);
 
   if (!userId) return null;
 
   const handleSave = async () => {
     try {
-      setIsSaved((prev) => !prev); 
-
       if (isSaved && currentSaveId) {
-      
+        setIsSaved(false);
+
         await axios.delete("/api/save", { data: { saveId: currentSaveId } });
+        setCurrentSaveId(null);
         toast("Story removed!");
       } else {
-      
+        setIsSaved(true);
+
         const res = await axios.post("/api/save", {
           storyId: story.id,
           userId,
         });
+
         setCurrentSaveId(res.data.id);
         toast("Story saved!");
       }
@@ -50,7 +52,6 @@ const SaveForm = ({ story, saves }: Props) => {
     } catch (error) {
       console.log(error);
       toast("Something went wrong", { className: "bg-rose-500 text-white" });
-      setIsSaved((prev) => !prev); 
     }
   };
 
